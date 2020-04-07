@@ -39,6 +39,6 @@ node server
 - DeleteVault
 - LookupVault
 
-## About PayWeb
+## PayWeb
 
 [PayWeb](https://www.paygate.co.za/paygate-products/payweb/) is an easy and secure way to accept payments online. The Customer makes payments using [PayGate’s](https://www.paygate.co.za/) secure hosted payment page. PayWeb is mobile-friendly making it compatible across all mobile devices. By selecting PayWeb, the Merchant gets immediate access to an array of Payment Methods, making it easier to get paid.
