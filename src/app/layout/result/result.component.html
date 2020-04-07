@@ -1,0 +1,43 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+  <strong>Result</strong></div>
+<div class="container-center">
+  <div class="row">
+      <label class="col-sm-3 text-right">Checksum Status</label>
+    <div class="col-sm-9 ">
+      <p *ngIf="!ChecksumChecked">The checksums do not match <i class="glyphicon glyphicon-remove text-danger"></i></p>
+      <p *ngIf="ChecksumChecked">Checksums match OK <i class="glyphicon glyphicon-ok text-success"></i></p>
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Pay Request ID</label>
+    <div class="col-sm-9">
+      <p>{{PAY_REQUEST_ID}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Transaction Status</label>
+    <div class="col-sm-9">
+      <p>{{TRANSACTION_STATUS}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Checksum</label>
+    <div class="col-sm-9">
+      <p>{{CHECKSUM}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <a [routerLink]="['/payweb3/initiate']" class="btn btn-primary btn-block">New Transaction</a>
+    </div>
+  </div>
+</div>

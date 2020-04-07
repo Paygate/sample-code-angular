@@ -1,0 +1,501 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+	<strong>Initiate WebPayment</strong></div>
+<div class="container" [@routerTransition]>
+	<form role="form" class="form-horizontal text-left" [formGroup]="webInitiateForm" (ngSubmit)="onSubmit()">
+		<div class="form-group row">
+			<label for="PayGateId" class="col-sm-3 control-label">PayGate ID</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" formControlName="PayGateId"  name="PayGateId" id="PayGateId" value="" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="Password" class="col-sm-3 control-label">Password</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" formControlName="Password"  name="Password" id="Password" value="" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="reference" class="col-sm-3 control-label">Reference</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" formControlName="Reference" name="Reference" id="Reference" value="" [ngClass]="{ 'is-invalid': submitted && webInitiateForm.controls.Reference.errors }" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="amount" class="col-sm-3 control-label">Amount</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" name="Amount" id="Amount" value="" formControlName="Amount"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="currency" class="col-sm-3 control-label">Currency</label>
+			<div class="col-sm-9">
+
+				<select formControlName="Currency" id="Currency" class="form-control" [ngClass]="{ 'is-invalid': submitted && webInitiateForm.controls.Currency.errors }">
+					<option *ngFor= "let countri of CountriesData" [selected]="countri.currency_code=='ZMK'" value={{countri.currency_code}} >{{countri.currency}} </option>
+				</select>
+				<!-- <input class="form-control" type="text" name="Currency" id="currency" value="" formControlName="Currency"/>
+				 -->
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="transDate" class="col-sm-3 control-label">Transaction Date</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" name="TransactionDate" id="transDate" value="" formControlName="TransactionDate"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="locale" class="col-sm-3 control-label">Locale</label>
+			<div class="col-sm-9">
+				<select  class="form-control" type="text" name="locale" id="locale" value="" formControlName="Locale"[ngClass]="{ 'is-invalid': submitted && webInitiateForm.controls.Locale.errors }">
+					<option *ngFor= "let locale of localeData" [selected]="locale.code=='zu'" value={{locale.code}} >{{locale.description}} </option>
+				</select>
+				<!-- <input class="form-control" type="text" name="locale" id="locale" value="" formControlName="Locale" /> -->
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="encryptionKey" class="col-sm-3 control-label">Encryption Key</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" name="encryptionKey" id="encryptionKey" value="" formControlName="EncryptionKey"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" (click)="paymethodAndUserDiv = !paymethodAndUserDiv" [attr.aria-expanded]="!paymethodAndUserDiv" aria-controls="paymethodAndUserDiv">
+					Paymethod and User Fields
+				</button>
+			</div>
+		</div>
+		<div id="paymethodAndUserDiv" [ngbCollapse]="paymethodAndUserDiv" class="collapse well well-sm">
+			<div class="form-group row">
+				<label for="payMethod" class="col-sm-3 control-label">Pay Method</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="payMethod" id="payMethod" value=""
+						placeholder="optional" formControlName="Method"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="payMethodDetail" class="col-sm-3 control-label">Pay Method Detail</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="payMethodDetail" id="payMethodDetail" value=""
+						placeholder="optional" formControlName="Detail"/>
+				</div>
+			</div>
+
+			<div class="form-group row userDefined">
+				<label for="userFields" class="col-sm-3 control-label">User Defined</label>
+				<div class="col-sm-4">
+					<input class="form-control userKey" type="text" name="UserKey" id="UserKey" value="1"
+						placeholder="Key" formControlName="UserKey"/>
+				</div>
+				<div class="col-sm-5">
+					<input class="form-control userField" type="text" name="UserValue" id="userField1" value=""
+						placeholder="Value" formControlName="UserValue"/>
+				</div>
+			</div>
+
+			<!-- <span id="fieldHolder"></span>
+			<div class="form-group row">
+				<div class="col-sm-offset-3 col-sm-4">
+					<button class="btn btn-primary" id="addUserFieldBtn" type="button"><i
+							class="glyphicon glyphicon-plus"></i> Add User Defined Fields</button>
+				</div>
+			</div> -->
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" (click)="customerDetailDiv = !customerDetailDiv" [attr.aria-expanded]="!customerDetailDiv" aria-controls="customerDetailDiv">
+					Customer Details
+				</button>
+			</div>
+		</div>
+		<div id="customerDetailDiv" [ngbCollapse]="customerDetailDiv" class="collapse well well-sm">
+			<div class="form-group row">
+				<label for="customerTitle" class="col-sm-3 control-label">Title</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="customerTitle" id="customerTitle" value=""
+						placeholder="optional" formControlName="Title" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="firstName" class="col-sm-3 control-label">First Name</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="firstName" id="firstName" value=""
+						placeholder="optional" formControlName="FirstName" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="middleName" class="col-sm-3 control-label">Middle Name</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="middleName" id="middleName" value=""
+						placeholder="optional" formControlName="MiddleName"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="lastName" class="col-sm-3 control-label">Last Name</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="lastName" id="lastName" value=""
+						placeholder="optional" formControlName="LastName"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="telephone" class="col-sm-3 control-label">Telephone</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="telephone" id="telephone" value=""
+						placeholder="optional" formControlName="Telephone"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="mobile" class="col-sm-3 control-label">Mobile</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="mobile" id="mobile" value=""
+					 placeholder="optional" formControlName="Mobile"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="fax" class="col-sm-3 control-label">Fax</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="fax" id="fax" value=""
+					placeholder="optional" formControlName="Fax" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="email" class="col-sm-3 control-label">Email</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="email" id="email" value=""
+					 placeholder="optional" formControlName="Email"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="dateOfBirth" class="col-sm-3 control-label">Date Of Birth</label>
+				<div class="col-sm-9">
+					<input class="form-control" name="dateOfBirth" id="dateOfBirth" value=""
+					 placeholder="optional" formControlName="DateOfBirth"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="socialSecurity" class="col-sm-3 control-label">Social Security</label>
+				<div class="col-sm-9">
+					<input class="form-control" name="socialSecurity" id="socialSecurity" value=""
+						placeholder="optional" formControlName="SocialSecurityNumber"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" (click)="riskDiv = !riskDiv" [attr.aria-expanded]="!riskDiv" aria-controls="riskDiv">
+					Risk Fields
+				</button>
+			</div>
+		</div>
+		<div id="riskDiv" [ngbCollapse]="riskDiv" class="collapse well well-sm ">
+			<div class="form-group row">
+				<label for="AccountNumber" class="col-sm-3 control-label">Account Number</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="AccountNumber" id="AccountNumber" value=""
+						placeholder="optional" formControlName="AccountNumber" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="riskIpAddr" class="col-sm-3 control-label">Ip Address</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="riskIpAddr" id="riskIpAddr" value=""
+						placeholder="optional" formControlName="IpAddress"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" type="button" (click)="shippingDiv = !shippingDiv" [attr.aria-expanded]="!shippingDiv" aria-controls="shippingDiv">
+					Shipping Fields
+				</button>
+			</div>
+		</div>
+		<div id="shippingDiv" [ngbCollapse]="shippingDiv" class="collapse well well-sm ">
+			<div class="form-group row">
+				<label for="deliveryDate" class="col-sm-3 control-label">Delivery Date</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="deliveryDate" id="deliveryDate" value=""
+						placeholder="optional" formControlName="DeliveryDate"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="DeliveryMethod" class="col-sm-3 control-label">Delivery Method</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="DeliveryMethod" id="DeliveryMethod" value=""
+						placeholder="optional" formControlName="DeliveryMethod"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-offset-3 col-sm-9">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="installRequired" id="installRequired" value="true"
+								checked="checked" formControlName="InstallationRequired"/> Installation Required
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" (click)="addressDiv = !addressDiv" [attr.aria-expanded]="!addressDiv" aria-controls="addressDiv">
+					Address Fields
+				</button>
+			</div>
+		</div>
+		<div id="addressDiv" [ngbCollapse]="addressDiv" class="collapse well well-sm ">
+			<div class="form-group row">
+				<div class="col-sm-offset-3 col-sm-9">
+					<label class="checkbox-inline">
+						<input name="Customer" id="Customer" type="checkbox" value="Customer"
+							checked="checked" formControlName="Customer" /> Customer
+					</label>
+					<label class="checkbox-inline">
+						<input name="Billing" id="Billing" type="checkbox" value="Billing" checked="checked"
+						formControlName="Billing" />
+						Billing
+					</label>
+					<label class="checkbox-inline">
+						<input name="incShipping" id="incShipping" type="checkbox" value="incShipping"
+							checked="checked" formControlName="Shipping"/> Shipping
+					</label>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="addressLine1" class="col-sm-3 control-label">Address Line 1</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="addressLine1" id="addressLine1" value=""
+						placeholder="optional" formControlName="AddressLine1"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="addressLine2" class="col-sm-3 control-label">Address Line 2</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="addressLine2" id="addressLine2" value=""
+						placeholder="optional" formControlName="AddressLine2"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="addressLine3" class="col-sm-3 control-label">Address Line 3</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="addressLine3" id="addressLine3" value=""
+						placeholder="optional" formControlName="AddressLine3"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="zip" class="col-sm-3 control-label">Zip</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="zip" id="zip" value=""
+					placeholder="optional" formControlName="Zip"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="city" class="col-sm-3 control-label">City</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="city" id="city"
+					value="" placeholder="optional" formControlName="City"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="state" class="col-sm-3 control-label">State</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="state" id="state"
+					value="" placeholder="optional" formControlName="State"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="country" class="col-sm-3 control-label">Country</label>
+				<div class="col-sm-9">
+					<!-- <select name="country" id="country" class="form-control" formControlName="Country">
+						<option>Choose Country</option>
+					</select> -->
+					<select name="Country" id="country" class="form-control" formControlName="Country" [ngClass]="{ 'is-invalid': submitted && webInitiateForm.controls.Country.errors }">
+						<option *ngFor= "let countri of CountriesData" [selected]="countri.code=='ZMK'" value={{countri.code}} >{{countri.country}} </option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" (click)="redirectFieldsDiv = !redirectFieldsDiv" [attr.aria-expanded]="!redirectFieldsDiv" aria-controls="redirectFieldsDiv">
+					Redirect Fields
+				</button>
+			</div>
+		</div>
+		<div id="redirectFieldsDiv" [ngbCollapse]="redirectFieldsDiv" class="collapse well well-sm">
+			<div class="form-group row">
+				<label for="retUrl" class="col-sm-3 control-label">Return URL</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="retUrl" id="retUrl" value=""
+					formControlName="ReturnUrl" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="notifyURL" class="col-sm-3 control-label">Notify URL</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="notifyURL" id="notifyURL"
+					value="" formControlName="NotifyUrl"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="target" class="col-sm-3 control-label">Target</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="target" id="target" value=""
+					formControlName="Target"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-block" type="button" (click)="airlineFieldsDiv = !airlineFieldsDiv" [attr.aria-expanded]="!airlineFieldsDiv" aria-controls="airlineFieldsDiv">
+					Airline Fields
+				</button>
+			</div>
+		</div>
+		<div id="airlineFieldsDiv" [ngbCollapse]="airlineFieldsDiv" class="collapse well well-sm">
+			<div class="form-group row">
+				<label for="ticketNumber" class="col-sm-3 control-label">Ticket Number</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="ticketNumber" id="ticketNumber"
+					value="" formControlName="TicketNumber"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="PNR" class="col-sm-3 control-label">PNR</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="PNR" id="PNR" value=""
+					formControlName="PNR"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-xs-12 text-center"><strong>Passenger</strong></div>
+			</div>
+			<div class="form-group row">
+				<label for="travellerType" class="col-sm-3 control-label">Traveller Type</label>
+				<div class="col-sm-9">
+					<select class="form-control" name="travellerType" id="travellerType"
+					formControlName="TravellerType">
+						<option value="A">Adult</option>
+						<option value="C">Child</option>
+						<option value="T">Teenager</option>
+						<option value="I">Infant</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-xs-12 text-center"><strong>Flight Details</strong></div>
+			</div>
+			<div class="form-group row">
+				<label for="departureAirport" class="col-sm-3 control-label">Departure Airport</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="departureAirport"
+					id="departureAirport" value="" placeholder="eg:ABC" formControlName="DepartureAirport"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="departureCountry" class="col-sm-3 control-label">Departure Country</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="departureCountry" id="departureCountry"
+					value=""	placeholder="eg:ABC" formControlName="DepartureCountry"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="departureCity" class="col-sm-3 control-label">Departure City</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="departureCity" id="departureCity" value=""
+						placeholder="eg:ABC" formControlName="DepartureCity" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="departureDateTime" class="col-sm-3 control-label">Departure Date & Time</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="departureDateTime" id="departureDateTime" value=""
+						placeholder="eg:2015-01-01T12:00:00" formControlName="DepartureDateTime"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="arrivalAirport" class="col-sm-3 control-label">Arrival Airport</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="arrivalAirport" id="arrivalAirport" value=""
+						placeholder="eg:ABC" formControlName="ArrivalAirport" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="arrivalCountry" class="col-sm-3 control-label">Arrival Country</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="arrivalCountry" id="arrivalCountry" value=""
+						placeholder="eg:ABC" formControlName="ArrivalCountry"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="arrivalCity" class="col-sm-3 control-label">Arrival City</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="arrivalCity" id="arrivalCity" value=""
+						placeholder="eg:ABC" formControlName="ArrivalCity"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="arrivalDateTime" class="col-sm-3 control-label">Arrival Date & Time</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="arrivalDateTime" id="arrivalDateTime" value=""
+						placeholder="eg:2015-01-01T12:00:00" formControlName="ArrivalDateTime" />
+				</div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="marketingCarrierCode" class="col-sm-3 control-label">Marketing Carrier Code</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="marketingCarrierCode" id="marketingCarrierCode"
+						value="" formControlName="MarketingCarrierCode"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="marketingCarrierName" class="col-sm-3 control-label">Marketing Carrier Name</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="marketingCarrierName" id="marketingCarrierName"
+						value="" formControlName="MarketingCarrierName"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="issuingCarrierCode" class="col-sm-3 control-label">Issuing Carrier Code</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="issuingCarrierCode" id="issuingCarrierCode"
+						value="" formControlName="IssuingCarrierCode"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="issuingCarrierName" class="col-sm-3 control-label">Issuing Carrier Name</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="issuingCarrierName" id="issuingCarrierName"
+						value="" formControlName="IssuingCarrierName"/>
+				</div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label for="flightNumber" class="col-sm-3 control-label">Flight Number</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="flightNumber" id="flightNumber"
+					 value="" formControlName="FlightNumber"/>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="form-group row">
+			<div class=" col-sm-12">
+				<!-- <img src="assets/images/loader.gif" alt="Processing" class="initialHide" id="authLoader"> -->
+				<input class="btn btn-success btn-block" id="doAuthBtn" type="submit" name="btnSubmit"
+					value="Do Auth" />
+			</div>
+		</div>
+		<br>
+	</form>
+</div>

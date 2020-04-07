@@ -1,0 +1,89 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+	<strong>Query</strong></div>
+<div class="container" [@routerTransition]>
+	<form role="form" class="form-horizontal text-left" [formGroup]="webQueryForm" (ngSubmit)="onSubmit()">
+		<div class="form-group row">
+			<label for="payGateId" class="col-sm-3 control-label">PayGate ID</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" name="PAYGATE_ID" id="payGateId"
+				value="10011072130" formControlName="PAYGATE_ID" [ngClass]="{ 'is-invalid': submitted && webQueryForm.controls.PAYGATE_ID.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="password" class="col-sm-3 control-label">Encryption Key</label>
+			<div class="col-sm-9">
+				<input class="form-control" type="text" name="PASSWORD" id="password"
+				 value="test" formControlName="PASSWORD"  [ngClass]="{ 'is-invalid': submitted && webQueryForm.controls.PASSWORD.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="reference" class="col-sm-3 control-label">Reference</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<label for="referenceChk" class="sr-only">Reference Checkbox</label>
+						<input  id="referenceChk" value="reference" type="radio"
+							aria-label="Reference Checkbox" formControlName="checkedRef"/>
+					</span>
+					<input type="text" formControlName="reference" name="reference" id="reference" class="form-control" aria-label="Reference Input"
+						value="" >
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="payrequestid" class="col-sm-3 control-label">Pay Request ID</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<label for="payrequestidChk" class="sr-only">Pay Request ID Checkbox</label>
+						<input id="payrequestidChk" value="payrequestid" type="radio"
+							aria-label="Pay Request ID Checkbox" formControlName="checkedRef" >
+					</span>
+					<input type="text" formControlName="payRequestId" name="payRequestId" id="payRequestId" class="form-control"
+						aria-label="Pay Request ID Input" value="" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="transid" class="col-sm-3 control-label">Transaction ID</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<label for="transidChk" class="sr-only">Transaction ID Checkbox</label>
+						<input  id="transidChk" value="transid" type="radio"
+							aria-label="Transaction ID Checkbox" formControlName="checkedRef">
+					</span>
+					<input type="text" name="transId" id="transId" class="form-control" formControlName="transId"
+						aria-label="Transaction ID Input" value="" />
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="form-group row">
+			<div class="col-sm-6">
+				<input class="btn btn-success btn-block" id="doQueryBtn" type="submit" name="btnSubmit"
+					value="Do Query" />
+			</div>
+			<div class="col-sm-6">
+				<a [routerLink]="['/webpayment/initiate']" class="btn btn-primary btn-block">New Transaction</a>
+			</div>
+		</div>
+		<br>
+	</form>
+	<div *ngIf="responseData !== ''" class="well">
+		<div class="row">
+			<textarea class="form-control" rows="10" cols="50" id="request">
+{{responseData}}
+			</textarea>
+		</div>
+	</div>
+</div>

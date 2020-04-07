@@ -1,0 +1,32 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+  <strong>Request / Redirect</strong></div>
+<div class="container" [@routerTransition]>
+  <form role="form" class="form-horizontal text-left" action={{redirect_url}} method="POST" [formGroup]="cardRequestForm" (ngSubmit)="onSubmit($event)">
+    <div class="form-group row">
+      <label for="request">Request Result</label><br>
+      <textarea class="form-control" rows="3" cols="50" id="request">
+      PAY_REQUEST_ID: {{PAY_REQUEST_ID}}
+      CHECKSUM: {{CHECKSUM}}
+      </textarea>
+    </div>
+    <input type="hidden" name="PAYGATE_ID" formControlName="PAYGATE_ID" />
+    <input type="hidden" name="PAY_REQUEST_ID" formControlName="PAY_REQUEST_ID"  />
+    <input type="hidden" name="CHECKSUM" formControlName="CHECKSUM" />
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <input class="btn btn-success btn-block" type="submit" value="Redirect" />
+      </div>
+    </div>
+    <br>
+  </form>
+</div>

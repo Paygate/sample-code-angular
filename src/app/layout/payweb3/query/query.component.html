@@ -1,0 +1,58 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+	<strong>Query</strong></div>
+<div class="container" [@routerTransition]>
+	<form role="form" class="form-horizontal text-left" [formGroup]="payweb3QueryForm" (ngSubmit)="onSubmit()">
+		<div class="form-group row">
+			<label for="PAYGATE_ID" class="col-sm-3 control-label">PayGate ID</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="PAYGATE_ID" id="PAYGATE_ID" class="form-control" value="10011072130" [ngClass]="{ 'is-invalid': submitted && payweb3QueryForm.controls.PAYGATE_ID.errors }" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="PAY_REQUEST_ID" class="col-sm-3 control-label">Pay Request ID</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="PAY_REQUEST_ID" id="PAY_REQUEST_ID" class="form-control" value="" [ngClass]="{ 'is-invalid': submitted && payweb3QueryForm.controls.PAY_REQUEST_ID.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="REFERENCE" class="col-sm-3 control-label">Reference</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="REFERENCE" id="REFERENCE" class="form-control" value="" [ngClass]="{ 'is-invalid': submitted && payweb3QueryForm.controls.REFERENCE.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="ENCRYPTION_KEY" class="col-sm-3 control-label">Encryption Key</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="ENCRYPTION_KEY" id="ENCRYPTION_KEY" class="form-control" value="" [ngClass]="{ 'is-invalid': submitted && payweb3QueryForm.controls.ENCRYPTION_KEY.errors }"/>
+			</div>
+		</div>
+		<br>
+		<div class="form-group row">
+			<div class="col-sm-6">
+				<input type="submit" id="doQueryBtn" class="btn btn-success btn-block" value="Do Query">
+			</div>
+			<div class="col-sm-6">
+				<a [routerLink]="['/payweb3/initiate']" class="btn btn-primary btn-block">New Transaction</a>
+			</div>
+		</div>
+	</form>
+	<br/>
+
+	<div *ngIf="responseData.length !== 0" class="well">
+		<div *ngFor= "let res of responseData" class="row">
+			<label for="{{res.key}}_RESPONSE" class="col-sm-3">{{res.key}}</label>
+			<div class="col-sm-8">
+				<p id="{{res.key}}_RESPONSE">{{res.value}}</p>
+			</div>
+		</div>
+	</div>
+</div>
