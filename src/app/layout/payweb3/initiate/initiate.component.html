@@ -1,0 +1,165 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+	<strong>Initiate</strong></div>
+<div class="container" [@routerTransition]>
+	<form role="form" class="form-horizontal text-left" [formGroup]="payweb3Form" (ngSubmit)="onSubmit()">
+		<div class="form-group row">
+			<label for="PAYGATE_ID" class="col-sm-3 control-label">PayGate ID</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="PAYGATE_ID" id="PAYGATE_ID" class="form-control" value="10011072130" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.PAYGATE_ID.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="REFERENCE" class="col-sm-3 control-label">Reference</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="REFERENCE" id="REFERENCE" class="form-control" value="" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.REFERENCE.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="AMOUNT" class="col-sm-3 control-label">Amount</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="AMOUNT" id="AMOUNT" class="form-control" value="100" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.AMOUNT.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="CURRENCY" class="col-sm-3 control-label">Currency</label>
+			<div class="col-sm-9">
+				<select formControlName="CURRENCY" id="CURRENCY" class="form-control" value="ZAR" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.CURRENCY.errors }">
+					<option *ngFor= "let countri of CountriesData" [selected]="countri.currency_code=='ZMK'" value={{countri.currency_code}} >{{countri.currency}} </option>
+				</select>
+				<!-- <input type="text" formControlName="CURRENCY" id="CURRENCY" class="form-control" value="ZAR" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.CURRENCY.errors }"/> -->
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="RETURN_URL" class="col-sm-3 control-label">Return URL</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="RETURN_URL" id="RETURN_URL" class="form-control" value="" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.RETURN_URL.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="TRANSACTION_DATE" class="col-sm-3 control-label">Transaction Date</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="TRANSACTION_DATE" id="TRANSACTION_DATE" class="form-control" value="" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.TRANSACTION_DATE.errors }"/>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="LOCALE" class="col-sm-3 control-label">Locale</label>
+			<div class="col-sm-9">
+				<select  class="form-control" type="text"formControlName="LOCALE" id="LOCALE"  value="en-za" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.LOCALE.errors }">
+					<option *ngFor= "let locale of localeData" [selected]="locale.code=='zu'" value={{locale.code}} >{{locale.description}} </option>
+				</select>
+				<!-- <input type="text" formControlName="LOCALE" id="LOCALE" class="form-control" value="en-za" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.LOCALE.errors }"/> -->
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="COUNTRY" class="col-sm-3 control-label">Country</label>
+			<div class="col-sm-9">
+				<select formControlName="COUNTRY" id="COUNTRY" class="form-control" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.COUNTRY.errors }">
+					<option *ngFor= "let countri of CountriesData" [selected]="countri.code=='ZMB'" value={{countri.code}} >{{countri.country}} </option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="EMAIL" class="col-sm-3 control-label">Customer Email</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="EMAIL" id="EMAIL" class="form-control" value="support@paygate.co.za" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.EMAIL.errors }"/>
+			</div>
+		</div>
+		<br>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<button type="button" class="btn btn-primary btn-block" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="extraFieldsDiv">
+					Extra Fields
+				</button>
+			</div>
+		</div>
+		<div id="extraFieldsDiv" [ngbCollapse]="isCollapsed" class="collapse well well-sm">
+			<div class="form-group row">
+				<label for="PAY_METHOD" class="col-sm-3 control-label">Pay Method</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="PAY_METHOD" id="PAY_METHOD" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="PAY_METHOD_DETAIL" class="col-sm-3 control-label">Pay Method Detail</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="PAY_METHOD_DETAIL" id="PAY_METHOD_DETAIL" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="NOTIFY_URL" class="col-sm-3 control-label">Notify URL</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="NOTIFY_URL" id="NOTIFY_URL" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="USER1" class="col-sm-3 control-label">User Field 1</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="USER1" id="USER1" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="USER2" class="col-sm-3 control-label">User Field 2</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="USER2" id="USER2" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="USER3" class="col-sm-3 control-label">User Field 3</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="USER3" id="USER3" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="VAULT" class="col-sm-3 control-label">Vault</label>
+				<div class="col-sm-9">
+					<div class="radio">
+						<label>
+							<input type="radio" formControlName="VAULT" id="VAULTOFF" value="">
+							No card Vaulting
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" formControlName="VAULT" id="VAULTNO" value="0">
+							Don't Vault card
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" formControlName="VAULT" id="VAULTYES" value="1">
+							Vault card
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="VAULT_ID" class="col-sm-3 control-label">Vault ID</label>
+				<div class="col-sm-9">
+					<input type="text" formControlName="VAULT_ID" id="VAULT_ID" class="form-control" placeholder="optional" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="ENCRYPTION_KEY" class="col-sm-3 control-label">Encryption Key</label>
+			<div class="col-sm-9">
+				<input type="text" formControlName="ENCRYPTION_KEY" id="ENCRYPTION_KEY" class="form-control" value="secret" [ngClass]="{ 'is-invalid': submitted && payweb3Form.controls.ENCRYPTION_KEY.errors }"/>
+			</div>
+		</div>
+		<br>
+		<div class="form-group row">
+			<div class=" col-sm-12">
+				<input type="submit" class="btn btn-success btn-block" value="Calculate Checksum" />
+			</div>
+		</div>
+		<br>
+	</form>
+</div>

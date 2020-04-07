@@ -1,0 +1,105 @@
+<!--
+ * Copyright (c) 2020 PayGate (Pty) Ltd
+ *
+ * Author: App Inlet (Pty) Ltd
+ *
+ * Released under the GNU General Public License Version 3
+ *
+-->
+
+<div style="background-color:#57B7DF; text-align: center; margin-bottom: 15px; padding: 4px; color: #ffffff;">
+  <strong>Request / Redirect</strong></div>
+<div class="container" [@routerTransition]>
+  <form role="form" class="form-horizontal text-left" action="https://secure.paygate.co.za/payweb3/process.trans" method="POST" [formGroup]="payweb3Request" (ngSubmit)="onSubmit($event)">
+    <div class="form-group row">
+      <label for="PAYGATE_ID" class="col-sm-3 control-label">PayGate ID</label>
+      <span id="PAYGATE_ID" class="form-control-static">{{paywebData['PAYGATE_ID'] ? paywebData['PAYGATE_ID'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="REFERENCE" class="col-sm-3 control-label">Reference</label>
+      <span id="REFERENCE" class="form-control-static">{{paywebData['REFERENCE'] ? paywebData['REFERENCE'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="AMOUNT" class="col-sm-3 control-label">Amount</label>
+      <span id="AMOUNT" class="form-control-static">{{paywebData['PAYGATE_ID'] ? paywebData['PAYGATE_ID'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="CURRENCY" class="col-sm-3 control-label">Currency</label>
+      <span id="CURRENCY" class="form-control-static">{{paywebData['CURRENCY'] ? paywebData['CURRENCY'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="RETURN_URL" class="col-sm-3 control-label">Return URL</label>
+      <span id="RETURN_URL" class="form-control-static">{{paywebData['RETURN_URL'] ? paywebData['RETURN_URL'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="LOCALE" class="col-sm-3 control-label">Locale</label>
+      <span id="LOCALE" class="form-control-static">{{paywebData['LOCALE'] ? paywebData['LOCALE'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="COUNTRY" class="col-sm-3 control-label">Country</label>
+      <span id="COUNTRY" class="form-control-static">{{paywebData['COUNTRY'] ? paywebData['COUNTRY'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="TRANSACTION_DATE" class="col-sm-3 control-label">Transaction Date</label>
+      <span id="TRANSACTION_DATE" class="form-control-static">{{paywebData['TRANSACTION_DATE'] ? paywebData['TRANSACTION_DATE'] : ''}}</span>
+    </div>
+    <div class="form-group row">
+      <label for="EMAIL" class="col-sm-3 control-label">Customer Email</label>
+      <span id="EMAIL" class="form-control-static">{{paywebData['EMAIL'] ? paywebData['EMAIL'] : ''}}</span>
+    </div>
+    <div class="well">
+      <div class="form-group row">
+        <label for="PAY_METHOD" class="col-sm-3 control-label">Pay Method</label>
+        <span id="PAY_METHOD" class="form-control-static">{{paywebData['PAY_METHOD'] ? paywebData['PAY_METHOD'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="PAY_METHOD_DETAIL" class="col-sm-3 control-label">Pay Method Detail</label>
+        <span id="PAY_METHOD_DETAIL" class="form-control-static">{{paywebData['PAY_METHOD_DETAIL'] ? paywebData['PAY_METHOD_DETAIL'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="NOTIFY_URL" class="col-sm-3 control-label">Notify Url</label>
+        <span id="NOTIFY_URL" class="form-control-static">{{paywebData['NOTIFY_URL'] ? paywebData['NOTIFY_URL'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="USER1" class="col-sm-3 control-label">User Field 1</label>
+        <span id="USER1" class="form-control-static">{{paywebData['USER1'] ? paywebData['USER1'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="USER2" class="col-sm-3 control-label">User Field 2</label>
+        <span id="USER2" class="form-control-static">{{paywebData['USER2'] ? paywebData['USER2'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="USER3" class="col-sm-3 control-label">User Field 3</label>
+        <span id="USER3" class="form-control-static">{{paywebData['USER3'] ? paywebData['USER3'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="VAULT" class="col-sm-3 control-label">Vault</label>
+        <span id="VAULT" class="form-control-static">{{paywebData['VAULT'] ? paywebData['VAULT'] : ''}}</span>
+      </div>
+      <div class="form-group row">
+        <label for="VAULT_ID" class="col-sm-3 control-label">Vault ID</label>
+        <span id="VAULT_ID" class="form-control-static">{{paywebData['VAULT_ID'] ? paywebData['VAULT_ID'] : ''}}</span>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="encryption_key" class="col-sm-3 control-label">Encryption Key</label>
+      <span id="encryption_key" class="form-control-static">{{encrypt_key}}</span>
+    </div>
+
+    <div class="form-group row">
+      <label for="request">Request Result</label><br>
+      <textarea class="form-control" rows="3" cols="50" id="request">
+  PAY_REQUEST_ID: {{PAY_REQUEST_ID}}
+  CHECKSUM: {{CHECKSUM}}</textarea>
+    </div>
+    <input type="hidden" name="PAY_REQUEST_ID" formControlName="PAY_REQUEST_ID" />
+    <input type="hidden" name="CHECKSUM" formControlName="CHECKSUM" />
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <input class="btn btn-success btn-block" type="submit" value="Redirect" />
+      </div>
+    </div>
+    <br>
+  </form>
+</div>
