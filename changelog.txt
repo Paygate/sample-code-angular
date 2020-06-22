@@ -7,3 +7,5 @@ Date	  : Version: Description
 2020-06-10: v1.0.1  : Package upgrade
                       Zero vulnerabilities
                       Package version to 9.0.0
+
+2020-06-22: v1.0.2  : Package vulnerabilities addressed
