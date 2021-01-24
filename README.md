@@ -4,7 +4,7 @@
 The below example code and testing interface has been provided.
 
 ## Installation
-[![PayGate Sample Code for Angular](https://www.appinlet.com/wp-content/uploads/2020/04/PayGate-Sample-Code-for-Angular-scaled.jpg)](https://www.youtube.com/watch?v=S3zYVa42f6g "PayGate Sample Code for Angular")
+[![PayGate Sample Code for Angular](https://appinlet.com/wp-content/uploads/2021/01/How-To-Setup-PayGate-PayWeb-for-PrestaShop-1.7.jpg)](https://www.youtube.com/watch?v=S3zYVa42f6g "PayGate Sample Code for Angular")
 
 To generate the needed scripts and styles, run:
 
